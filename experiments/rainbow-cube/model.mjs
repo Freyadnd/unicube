@@ -41,15 +41,23 @@ export function grow(planted,seed) {
 
 // 126 exact-cover units at n=7, one option per canonical physical cell.
 // Region keys include face; equal colors across faces never merge constraints.
-export function countGlobal(maps,{limit=Infinity,maxNodes=2000000,t=topology}={}) {
+export function countGlobal(maps,{limit=Infinity,maxNodes=2000000,t=topology,required=[],excluded=[]}={}) {
   validateBoard(maps,null,t);
   if(!(limit===Infinity||Number.isSafeInteger(limit)&&limit>=1)||!Number.isSafeInteger(maxNodes)||maxNodes<1)throw new Error('Invalid limit');
   const covers=t.physicalCells.map(cell=>cell.faceCells.flatMap(r=>{
     const base=t.faces.indexOf(r.face)*3*t.n;
     return [base+r.row,base+t.n+r.col,base+2*t.n+maps[r.face][r.row*t.n+r.col]];
   }));
-  const units=Array.from({length:18*t.n},(_,u)=>covers.flatMap((cs,i)=>cs.includes(u)?[i]:[]));
+  const ids=new Map(t.physicalCells.map((cell,i)=>[cell.id,i]));
+  for(const list of [required,excluded])if(!Array.isArray(list)||list.some(id=>!ids.has(id)))throw new Error('Invalid physical marks');
+  const blocked=new Set(excluded.map(id=>ids.get(id)));
+  const units=Array.from({length:18*t.n},(_,u)=>covers.flatMap((cs,i)=>!blocked.has(i)&&cs.includes(u)?[i]:[]));
   const used=Array(units.length).fill(false),selected=[],solutions=[];
+  for(const id of new Set(required)) {
+    const i=ids.get(id);
+    if(blocked.has(i)||covers[i].some(u=>used[u]))return {count:0,exact:true,status:'exhausted',nodes:0,solutions:[]};
+    selected.push(i);covers[i].forEach(u=>used[u]=true);
+  }
   let count=0,nodes=0,stopped=null;
   function visit() {
     if(nodes>=maxNodes){stopped='node-limit';return;}nodes++;

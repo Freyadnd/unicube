@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>UNICUBE · Board C playtest</title><link rel="stylesheet" href="/src/style.css"><link rel="stylesheet" href="/src/fixed.css"></head>
+<body>
+<header><h1>UNICUBE <small>Board C · playtest</small></h1>
+<p>Find the unicorns on this unfolded cube.</p>
+<ul class="rules"><li>7 unicorns are visible on every face.</li><li>Exactly one in every row and column.</li><li>Exactly one in every rainbow region <strong>on each face</strong>.</li><li>Edge cells are shared by two faces; corners by three.</li></ul>
+<p>Click or tap: <strong>blank → × excluded → ★ unicorn → blank</strong>. Matching shared cells update together, even when their region colors differ.</p>
+<div id="legend" aria-label="Rainbow region colors"></div>
+<div class="toolbar"><label>DEV board <select id="variant"></select></label><button id="undo" disabled>Undo</button><button id="reset" disabled>Reset</button><span id="status" role="status">Loading Board C…</span></div>
+</header>
+<main><p class="hint">Hover or focus a cell to outline its shared copies. On a small screen, scroll the net sideways. Progress lasts until you reload.</p>
+<div id="cell-info" aria-live="polite">Rows and columns are numbered from 1.</div>
+<div class="net-scroll" tabindex="0" aria-label="Scrollable cube net"><div id="net" aria-label="Board C cube net"></div></div>
+<ul id="contradictions" aria-label="Rule contradictions"></ul>
+<details id="developer"><summary>Developer tools — playtest only (contains spoilers)</summary>
+<p>The count below uses the global solver. Zero means no completion matches these marks; normal play does not use this as a move warning.</p>
+<dl><dt>Selected fixture / variant</dt><dd id="selected">C0</dd><dt>Fixed unicorn clues</dt><dd id="fixed-count">0</dd><dt>Compatible global solutions</dt><dd id="compatible">Open this panel to calculate</dd><dt>Player-placed unicorns</dt><dd id="placed">0</dd><dt>Rule contradiction</dt><dd id="dev-conflict">No</dd></dl>
+<button id="show-solution" disabled>Show solution (DEV ONLY)</button><p>This fills the answer for testing. Undo restores your previous marks.</p>
+</details>
+</main><script type="module" src="/src/app.mjs"></script>
+</body></html>
