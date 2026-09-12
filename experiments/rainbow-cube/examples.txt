@@ -1,0 +1,224 @@
+D: regions
+                TOP
+                R R Y Y Y O O
+                R B B B Y O Y
+                B B B B Y Y Y
+                B B B I I Y Y
+                B B I I G G G
+                V I I G G G G
+                V V I G G G G
+
+LEFT            FRONT           RIGHT           BACK
+R R R G G V V   O R R R R G G   G G G G O O O   O Y Y Y Y R R
+R R G G G V V   O Y Y I I G G   G G G G O Y O   O O Y Y Y O R
+G G G G I I V   Y Y Y I I I G   G G G Y Y Y V   O O O O O O O
+G G G G Y Y Y   Y Y Y I I G G   B B B Y V V V   I O O O B B G
+G G G Y Y Y Y   Y Y Y I I B B   B B B Y R V I   I I I B B G G
+B B B Y O Y O   Y V V I I B B   B B R R R I I   I V V V B B B
+B B B B O O O   Y V V V B B B   B R R R R I I   I V V V B B B
+
+                BOTTOM
+                O O R R R R R
+                O O O Y R R R
+                O O Y Y R R R
+                O O Y Y Y G G
+                B O I I I G G
+                B I I I I I I
+                B B V V V V I
+
+Answer overlay (U / .)
+                TOP
+                U . . . . . .
+                . . . . . U .
+                . . . . . . U
+                . . U . . . .
+                . . . U . . .
+                . . . . U . .
+                . U . . . . .
+
+LEFT            FRONT           RIGHT           BACK
+U . . . . . .   . U . . . . .   . . . . U . .   . . . . . . U
+. . . . . . U   U . . . . . .   . U . . . . .   . . . U . . .
+. . . . . U .   . . U . . . .   . . . U . . .   . U . . . . .
+. U . . . . .   . . . . . U .   . . . . . . U   U . . . . . .
+. . . U . . .   . . . . . . U   U . . . . . .   . . . . . U .
+. . . . U . .   . . . . U . .   . . U . . . .   . . . . U . .
+. . U . . . .   . . . U . . .   . . . . . U .   . . U . . . .
+
+                BOTTOM
+                . . . U . . .
+                . U . . . . .
+                . . U . . . .
+                . . . . . U .
+                U . . . . . .
+                . . . . . . U
+                . . . . U . .
+
+A: regions
+                TOP
+                R R Y Y Y O O
+                R B B B Y O Y
+                B B B B Y Y Y
+                B B B I I Y Y
+                B B I I G G G
+                V I I G G G G
+                V V I G G G G
+
+LEFT            FRONT           RIGHT           BACK
+R R R G G V V   O R R R R G G   G G G G O O O   O Y Y Y Y R R
+R R G G G V V   O Y Y I I G G   G G G G G Y O   O O Y Y Y O R
+G G G G I I V   Y Y Y I I I G   G G G Y Y Y V   O O O O O O O
+G G G G Y Y Y   Y Y Y I I G G   B B B Y V V V   I O O O B B G
+G G G Y Y Y Y   Y Y Y I I B B   B B B Y R V I   I I I B B G G
+B B B Y O Y O   Y V V I I B B   B B R R R I I   I V V V B B B
+B B B B O O O   Y V V V B B B   B R R R R I I   I V V V B B B
+
+                BOTTOM
+                O O R R R R R
+                O O O Y R R R
+                O O Y Y R R R
+                O O Y Y Y G G
+                B O I I I G G
+                B I I I I I I
+                B B V V V V I
+
+Answer overlay (U / .)
+                TOP
+                U . . . . . .
+                . . . . . U .
+                . . . . . . U
+                . . U . . . .
+                . . . U . . .
+                . . . . U . .
+                . U . . . . .
+
+LEFT            FRONT           RIGHT           BACK
+U . . . . . .   . U . . . . .   . . . . U . .   . . . . . . U
+. . . . . . U   U . . . . . .   . U . . . . .   . . . U . . .
+. . . . . U .   . . U . . . .   . . . U . . .   . U . . . . .
+. U . . . . .   . . . . . U .   . . . . . . U   U . . . . . .
+. . . U . . .   . . . . . . U   U . . . . . .   . . . . . U .
+. . . . U . .   . . . . U . .   . . U . . . .   . . . . U . .
+. . U . . . .   . . . U . . .   . . . . . U .   . . U . . . .
+
+                BOTTOM
+                . . . U . . .
+                . U . . . . .
+                . . U . . . .
+                . . . . . U .
+                U . . . . . .
+                . . . . . . U
+                . . . . U . .
+
+B: regions
+                TOP
+                R R R O O O Y
+                R R R I B O Y
+                R I I I B B Y
+                I I I I B B B
+                V I I B B B B
+                V V B B G B B
+                V V V V G G B
+
+LEFT            FRONT           RIGHT           BACK
+R R R R V V V   O R R R Y G G   B B B Y Y Y Y   Y Y O O R R R
+R R R R Y Y V   O O O Y Y G G   B B B Y Y Y Y   Y Y O O B B B
+G G R I O Y Y   O O Y Y Y G G   B B O R R Y Y   Y Y G G G B B
+B G G I O O Y   O V V V I G G   O O O R G G G   G G G G G B B
+B B B I O O O   O V V V I I B   O O O O G G G   G G B B B B B
+B B B O O O O   O V V V I I B   O O I I I G G   G V V V V B B
+B B B O O O O   V V V V I I I   I I I V V V G   I I I V V V B
+
+                BOTTOM
+                O V V V V I I
+                O O Y V V I I
+                Y Y Y R R I I
+                B Y Y R R R I
+                B Y Y G G I I
+                B Y Y G G I I
+                B Y Y G G I I
+
+Answer overlay (U / .)
+                TOP
+                U . . . . . .
+                . . . . . U .
+                . . . . . . U
+                . . U . . . .
+                . . . U . . .
+                . . . . U . .
+                . U . . . . .
+
+LEFT            FRONT           RIGHT           BACK
+U . . . . . .   . U . . . . .   . . . . U . .   . . . . . . U
+. . . . . . U   U . . . . . .   . U . . . . .   . . . U . . .
+. . . . . U .   . . U . . . .   . . . U . . .   . U . . . . .
+. U . . . . .   . . . . . U .   . . . . . . U   U . . . . . .
+. . . U . . .   . . . . . . U   U . . . . . .   . . . . . U .
+. . . . U . .   . . . . U . .   . . U . . . .   . . . . U . .
+. . U . . . .   . . . U . . .   . . . . . U .   . . U . . . .
+
+                BOTTOM
+                . . . U . . .
+                . U . . . . .
+                . . U . . . .
+                . . . . . U .
+                U . . . . . .
+                . . . . . . U
+                . . . . U . .
+
+C: regions
+                TOP
+                R R R R O O O
+                G G G G G O Y
+                G G G G Y Y Y
+                G G G G G Y Y
+                V V G B B Y Y
+                V V V B I I I
+                V V V B I I I
+
+LEFT            FRONT           RIGHT           BACK
+G G G G V V R   R R Y Y Y G G   G Y Y Y Y O O   O O Y Y R R R
+G G G O V V R   O O Y Y G G G   G G Y Y Y O O   O O Y Y G G G
+G G G O V Y Y   Y Y Y G G G G   G G B B O O O   O O V V V G G
+G O O O V Y Y   Y I I I I G B   G B B V O O O   V V V V V G G
+O O B V V Y Y   V I I I I B B   I R R V V V V   V V G G G G G
+B B B B I I Y   V V V I I I I   I R R V V V V   V B B B B G G
+B B B B B B Y   V V V V I I I   I R R V V V V   I I I B B B G
+
+                BOTTOM
+                Y Y R R R R R
+                Y Y Y O R R R
+                Y Y O O R R R
+                Y Y O O O G G
+                B Y V V V G G
+                B V V V V V V
+                B B I I I I V
+
+Answer overlay (U / .)
+                TOP
+                U . . . . . .
+                . . . . . U .
+                . . . . . . U
+                . . U . . . .
+                . . . U . . .
+                . . . . U . .
+                . U . . . . .
+
+LEFT            FRONT           RIGHT           BACK
+U . . . . . .   . U . . . . .   . . . . U . .   . . . . . . U
+. . . . . . U   U . . . . . .   . U . . . . .   . . . U . . .
+. . . . . U .   . . U . . . .   . . . U . . .   . U . . . . .
+. U . . . . .   . . . . . U .   . . . . . . U   U . . . . . .
+. . . U . . .   . . . . . . U   U . . . . . .   . . . . . U .
+. . . . U . .   . . . . U . .   . . U . . . .   . . . . U . .
+. . U . . . .   . . . U . . .   . . . . . U .   . . U . . . .
+
+                BOTTOM
+                . . . U . . .
+                . U . . . . .
+                . . U . . . .
+                . . . . . U .
+                U . . . . . .
+                . . . . . . U
+                . . . . U . .
+
