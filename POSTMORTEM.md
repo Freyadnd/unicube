@@ -1,66 +1,61 @@
-# UNICUBE --- Building a Globally Unique Puzzle on the Surface of a Cube
+# UNICUBE --- Postmortem
 
-> Six faces. Shared stars. One solution.
+**Six faces. Shared stars. One solution.**
 
-UNICUBE is my JS13K 2026 game: a spatial logic puzzle about placing
-unicorns across rainbow-colored regions on the surface of a cube.
+UNICUBE is a spatial logic puzzle I made for JS13K 2026. The competition
+build is 12,654 bytes zipped.
 
-The final rules are simple:
+There is also a larger **Director's Cut** that skips the tutorial
+campaign and goes straight to 7×7 constellations:
 
--   each face is an N×N grid;
--   each row contains exactly one unicorn;
--   each column contains exactly one unicorn;
--   each rainbow region contains exactly one unicorn;
--   cells on cube edges are shared by two faces;
--   cells on cube corners are shared by three.
+**Director's Cut:** https://unicube-directors-cut.vercel.app/
 
-What turned out to be much less simple was finding puzzles where those
-rules actually produce something interesting.
+The basic rule is simple: on every face of the cube, place exactly one
+🦄 in each row, each column, and each rainbow region.
 
-The project started as a visual idea --- a pastel cube covered in
-unicorns and constellations --- and gradually turned into an experiment
-in constraint solving, topology, puzzle generation, and aggressive
-browser-game compression.
+The catch is that the six faces are not separate boards. Edge cells
+belong to two faces, and corner cells belong to three. So a cell that
+looks ambiguous from one side can become forced after you rotate the
+cube.
 
-This is the story of how it got there.
+That shared geometry ended up being the whole game.
 
-## 1. The original hypothesis
+## Where it started
 
-The first idea was essentially:
+The first version was much less interesting: essentially six
+Queens-style region puzzles displayed on a cube.
 
-> What if a Queens-style region puzzle wrapped around a cube?
+I wanted the cube to matter mathematically, not just visually, so I
+changed the model. Every location on the surface became a canonical
+physical cell. A face only holds a reference to it.
 
-Each face would contain a 7×7 board partitioned into seven
-rainbow-colored regions. A player would place one unicorn in every row,
-column, and region.
+For a 7×7 cube there are 294 visible face-cell references, but only 218
+physical cells:
 
-But simply putting six puzzles on a cube wasn't interesting enough.
+`6(N - 2)^2 + 12(N - 2) + 8`
 
-The important question became:
+For N = 7:
 
-**Can information actually travel across the cube?**
+`150 face interiors + 60 edge interiors + 8 corners = 218`
 
-If a cell lies on an edge, the two faces meeting at that edge shouldn't
-merely display similar cells. They should refer to the **same physical
-cell**.
+An interior cell appears once, an edge cell twice, and a corner three
+times:
 
-Likewise, a corner should be one physical cell represented on three
-faces.
+`150 × 1 + 60 × 2 + 8 × 3 = 294`
 
-That changes the puzzle from six independent constraint systems into one
-global system.
+This means placing or ruling out a unicorn on an edge immediately
+changes the neighboring face too.
 
-## 2. First failure: random rainbow regions
+Rainbow regions are different: they stay local to each face. So one
+physical cell can participate in several different row, column, and
+region constraints depending on which faces touch it.
 
-My first generator produced random connected rainbow regions on a single
-7×7 face.
+## Random regions did not work
 
-It seemed reasonable: generate seven connected regions, then ask how
-many placements satisfy the row, column, and region constraints.
+My first attempt at puzzle generation was simply to make random
+connected rainbow regions and count the solutions.
 
-I tested **10,000 random region maps**.
-
-The result was not encouraging:
+I tested 10,000 random 7×7 face maps:
 
   Result                    Share
   ---------------------- --------
@@ -68,481 +63,213 @@ The result was not encouraging:
   Exactly one solution      0.12%
   Multiple solutions       47.16%
 
-The average board had about **32.29 solutions**.
+The average map had about 32.29 solutions.
 
-So naive random region generation was almost the opposite of a good
-puzzle generator. Most boards were either impossible or wildly
-ambiguous, while unique boards were extremely rare.
+So random regions were basically useless as a puzzle generator. Most
+were impossible or very ambiguous, and unique boards were extremely
+rare.
 
-That changed the direction of the project.
+From there I switched to a solution-first approach: construct valid cube
+states, build regions around them, and use an offline solver to reject
+anything that does not have the properties I want.
 
-Instead of asking:
+## Local ambiguity, global uniqueness
 
-> Can I generate pretty regions and hope they make a puzzle?
+This became the main idea behind UNICUBE.
 
-I started asking:
+A face does **not** need to have one solution by itself. In fact, it is
+more interesting when it doesn't.
 
-> Can I construct the solution first, then build constraints around it?
+The offline tooling counts solutions for every individual face and then
+counts solutions again with all shared edge and corner identities
+connected.
 
-## 3. Before regions: understand the cube
+One of the 5×5 puzzles in the competition build has 48 possible
+combinations if its six faces are treated independently.
 
-Before generating more puzzles, I needed a precise model of the cube
-itself.
+As one shared cube, it has exactly one.
 
-A 7×7 cube has:
+`48 local combinations → 1 global solution`
 
--   6 × 49 = **294 face-cell references**.
+That was the point where the cube stopped being a presentation trick and
+became the actual puzzle mechanic.
 
-But many of those references describe the same physical location.
+The Director's Cut pushes this much further. Its current verified 7×7
+bank contains 12 different region puzzles, all with exactly one global
+solution and no fixed unicorns.
 
-For an N×N cube surface, the number of unique physical cells is:
+For example, constellation `#10257` has isolated face solution counts:
 
-`6(N - 2)^2 + 12(N - 2) + 8`
+`48 × 16 × 68 × 24 × 48 × 6`
 
-For N = 7:
+That is **360,972,288** independent local combinations.
 
--   face interiors = 6 × 25 = 150
--   edge interiors = 12 × 5 = 60
--   corners = 8
--   **total physical cells = 218**
+Once the faces share their physical edge and corner cells, there is
+**1** global solution.
 
-Their incidences reconstruct the 294 face references:
+You can open that exact saved constellation with:
 
-`150 × 1 + 60 × 2 + 8 × 3 = 294`
+https://unicube-directors-cut.vercel.app/?s=10257
 
-That distinction became fundamental to the implementation.
+The `?s=` value currently selects a puzzle from a finite
+offline-verified bank. It is deterministic, but it is not pretending to
+be a procedural generator.
 
-A face cell is a **representation**.
+## Why the solver is offline
 
-A physical cube cell is the **state**.
+I considered generating puzzles from random seeds in the browser, but
+uniqueness alone is not enough. A puzzle can be mathematically valid and
+still be boring, opaque, or unpleasant to solve.
 
-## 4. Canonical shared state
+For the 13KB version, shipping the generator and global solver would
+also have been a terrible use of bytes.
 
-Every physical cell receives one canonical identity.
+So the expensive work happens before the game ships:
 
-Interior cells appear on one face. Edge cells appear on two. Corner
-cells appear on three.
+1.  generate candidates;
+2.  solve individual faces;
+3.  solve the connected cube;
+4.  reject non-unique cubes;
+5.  measure local ambiguity and other structural properties;
+6.  save only verified fixtures.
 
-If the player rules out an edge star on the front face, the
-corresponding star on the neighboring face must disappear too.
+The runtime only needs the result.
 
-If the player places a unicorn in a corner, all three incident faces
-immediately see that unicorn.
+The competition build contains no general-purpose puzzle generator or
+global solver.
 
-This sounds like a rendering detail, but mathematically it is what makes
-UNICUBE one puzzle instead of six.
+## Turning it into a game
 
-Rainbow regions deliberately work differently: regions are
-**face-local**.
+The first playable prototype went straight to 7×7. It made sense to me
+because I had been staring at the rules for hours. It did not make much
+sense as an introduction.
 
-The same physical edge or corner cell may therefore participate in a
-different rainbow region on every incident face.
-
-A single variable can simultaneously participate in row, column, and
-region constraints across multiple faces. That is where much of the
-global coupling comes from.
-
-## 5. An unexpected property of complete cube solutions
-
-Once the topology worked, I temporarily removed rainbow regions and
-generated complete cube-wide unicorn arrangements satisfying only row
-and column constraints.
-
-I generated **10,000 complete cube solutions**.
-
-One structural property kept appearing:
-
-> Every physical cube edge necessarily contains exactly one unicorn,
-> including its endpoints.
-
-This was an early sign that the topology itself was already producing
-strong coupling.
-
-But row and column constraints alone were not enough. The rainbow
-regions became the additional local constraints that could turn that
-coupling into interesting deductions.
-
-## 6. From six local puzzles to one global CSP
-
-The next experiment combined:
-
--   cube topology;
--   shared physical cells;
--   face-local rainbow regions;
--   row constraints;
--   column constraints;
--   region constraints.
-
-Then I wrote an offline solver that could count both the solutions
-available to individual faces and the solutions available to the entire
-connected cube.
-
-This was the point where the original idea finally worked.
-
-Several generated boards were highly ambiguous when their faces were
-considered independently, yet had exactly **one global solution** once
-edge and corner identities were enforced.
-
-That became the central design principle of UNICUBE:
-
-> **Local ambiguity, global uniqueness.**
-
-## 7. The 5×5 result that convinced me
-
-The clearest example appears in the 5×5 constellation used in the game.
-
-If its six faces are solved independently, their local possibilities
-combine into:
-
-**48 possible face combinations.**
-
-But when those same faces are treated as representations of one physical
-cube --- sharing their edge and corner cells --- the number of solutions
-becomes:
-
-**1.**
-
-`48 local combinations → shared cube topology → 1 global solution`
-
-That is probably the single number that best explains why UNICUBE
-exists.
-
-The cube is not just presentation. It is part of the constraint system.
-
-## 8. Why the game doesn't generate puzzles at runtime
-
-At one point I considered making every run different with a random seed.
-
-That would have enabled shareable constellations such as
-`CONSTELLATION #4821`.
-
-But the experiments had already shown why unconstrained random
-generation was dangerous. A generated board can easily be unsatisfiable,
-massively ambiguous, locally trivial, globally uninteresting, or simply
-unpleasant to solve.
-
-Guaranteeing puzzle quality would require carrying substantially more
-generation and solving machinery into the browser. That was particularly
-unattractive in a 13KB game.
-
-So UNICUBE does the expensive work **offline**.
-
-The development tools search puzzle space, count solutions, reject bad
-candidates, and verify global uniqueness.
-
-The runtime receives only puzzles that already passed those checks.
-
-There is **no general-purpose puzzle solver or generator in the shipped
-game**.
-
-> Spend computation during construction; spend bytes on the experience.
-
-## 9. Making the mathematics playable
-
-The original prototype jumped almost immediately into a 7×7 cube.
-
-Mathematically it worked. As a game, it didn't.
-
-A new player had to understand rows, columns, rainbow regions,
-exclusions, unicorn placement, cube rotation, shared edges, and shared
-corners simultaneously.
-
-So the campaign became four increasingly large **real cubes**:
+The competition version became a four-act progression:
 
 `3×3 → 4×4 → 5×5 → 7×7`
 
-### 3×3 --- FIRST STEPS
+The 3×3 puzzle is heavily guided. It teaches rows, columns, rainbow
+regions, shared edges, and shared corners through actual moves rather
+than a long rules screen.
 
-A heavily guided cube introduces the vocabulary and basic deductions.
-The tutorial demonstrates shared geometry rather than explaining it only
-in text.
+By 7×7, the tutorial is gone and the player is solving the full cube.
 
-### 4×4 --- CONSTELLATION
+The Director's Cut removes that progression and opens directly on 7×7.
+It is the version for experimenting with the larger puzzle system rather
+than teaching it.
 
-The player receives more independence while still having strong starting
-deductions.
+## Interaction and visual language
 
-### 5×5 --- DEEPER
-
-Local ambiguity becomes much more important. This is the puzzle where 48
-independent face combinations collapse to one global solution.
-
-### 7×7 --- UNICUBE
-
-The full puzzle.
-
-## 10. Teaching edges without teaching topology
-
-One UX problem was surprisingly difficult:
-
-How do you explain that two visible cells are actually one variable?
-
-Text such as "edges are shared" was technically correct and practically
-useless.
-
-The tutorial eventually switched to demonstration.
-
-When a shared edge cell changes, its representation on the neighboring
-face changes too. The camera reveals the adjacent face and briefly
-emphasizes the relevant geometry.
-
-Corners use the same idea across three faces.
-
-The goal is for the player to think:
-
-> Oh, that's literally the same spot.
-
-rather than:
-
-> I have learned a new special rule called "shared edges."
-
-## 11. Stars instead of Xs
-
-Early versions used more conventional puzzle markings.
-
-They worked, but visually the game started looking like a spreadsheet
-wrapped around a cube.
-
-The final visual language became celestial:
+I wanted the board to feel less like a spreadsheet, so the cell states
+became:
 
 -   `✦` possible
 -   `·` ruled out
 -   `🦄` confirmed
 
-A single click or tap toggles a possible star into a tiny extinguished
-dot.
+Clicking a star extinguishes it into a dot. Double-clicking places a
+unicorn. Dragging rotates the cube.
 
-A double click or double tap places a unicorn.
+The renderer is small custom WebGL, with CSS and system text around it.
+There are no external textures, fonts, image assets, or 3D libraries in
+the competition build. The unicorn itself is the native Unicode emoji.
 
-The interaction became:
+The face indicators under the cube do several jobs at once: they show
+progress, help with orientation, and rotate a selected face toward the
+camera.
 
-> Extinguish stars until the unicorns remain.
+Hints also avoid looking at the known solution. They only use deductions
+available from the player's current state.
 
-That metaphor fit the game's visual identity much better than filling a
-board with X marks.
+## Fitting it into 13KB
 
-## 12. The visual direction
+The development repo is much larger than the game because it contains
+the experiments, solvers, generators, fixtures, analysis, and tests.
 
-The final art direction became:
+The submission does not.
 
-**Celestial Pastel / Vintage Unicorn / Constellation Puzzle**
+An early stripped build was only 8,722 bytes, but it was missing much of
+the final game. After adding the campaign, tutorial, hints, navigation,
+camera behavior, and final visuals, the release pipeline packed
+everything back into a single HTML file.
 
-The palette uses muted dusty rose, peach, butter cream, sage, powder
-blue, indigo, and lavender.
+Final competition archive:
 
-The cube is rendered directly with WebGL.
+  Metric                  Value
+  -------------- --------------
+  JS13K limit      13,312 bytes
+  Final ZIP        12,654 bytes
+  Headroom            658 bytes
+  Source tests            70/70
 
-There are no external textures, image assets, font downloads, or 3D
-libraries. Even the unicorn is the native Unicode 🦄 rendered by the
-browser/system.
+The ZIP contains only `index.html` at its root.
 
-This was partly an aesthetic choice and partly a size-budget choice.
+One useful lesson from the last release pass: test the artifact, not
+just the source.
 
-> If it can't be generated with geometry, CSS, text, or a tiny amount of
-> code, it probably doesn't belong in the game.
+The source tests were already green when the packed production build
+exposed a startup bug caused by transformed level data. Later browser QA
+found another release issue where the cube clipped on narrow screens.
 
-## 13. Face navigation became part of solving
+The final archive was tested directly in Chrome across all four acts,
+including mouse, drag, touch, Undo, Reset, Hint, Rules, face navigation,
+desktop, and portrait layouts.
 
-A freely rotating cube is visually nice, but repeatedly dragging it
-while solving a logic puzzle becomes tiring.
+## Director's Cut
 
-The final UI gives every face a compact progress indicator. Each
-indicator shows how many unicorns are currently placed on that face and
-also acts as navigation.
+Once the 13KB build was frozen, I branched the project and stopped
+treating size as the main constraint.
 
-Clicking one automatically rotates that face toward the player.
+The Director's Cut currently:
 
-A face is only considered complete when its row, column, and
-rainbow-region constraints all pass. Shared unicorns naturally count on
-every face they touch.
+-   opens directly on 7×7;
+-   contains 12 offline-verified constellations;
+-   gives each constellation a stable ID;
+-   supports shareable `?s=` URLs;
+-   shows the real local/global solution counts for each puzzle;
+-   keeps the same cube renderer and interaction model.
 
-The result is simultaneously progress UI, spatial orientation,
-navigation, and a reminder that all six faces belong to the same puzzle.
+The first search for this bank examined 300 assemblies, refined 13
+candidates, and accepted 12 in 4.49 seconds.
 
-## 14. Hints without shipping a solver
+The current filters require exactly one global solution, locally
+ambiguous faces, substantial independent local ambiguity, connected
+regions, and evidence that shared boundaries actually remove
+possibilities.
 
-I wanted hints, but did not want the production game to consult the
-known solution or carry the offline solver.
+The obvious next problem is no longer uniqueness. It is human solve
+quality.
 
-The runtime hint system therefore recognizes only simple logical
-deductions from the player's current state:
+Some globally unique 7×7 boards do not immediately expose a deduction
+through the game's simple hint vocabulary. So the next version of the
+generator needs to care about the *path* to the solution, not just the
+fact that one exists.
 
--   a row already contains its unicorn;
--   a column already contains its unicorn;
--   a rainbow region already contains its unicorn;
--   only one candidate remains in a constrained unit.
+That is also why I have not called the current Director's Cut an
+infinite procedural generator. It is a small verified bank that can keep
+growing as the generation and difficulty model improves.
 
-Hints point to **why** something can be deduced rather than editing the
-board automatically.
+## What I learned
 
-This also lets the 3×3 tutorial and the later Hint button share the same
-visual language.
+The biggest surprise was that ambiguity was useful.
 
-## 15. The 13KB problem
+Normally, multiple solutions are something a puzzle generator tries to
+eliminate. Here I want ambiguity on individual faces. The interesting
+part is watching those possibilities disappear when the faces are
+connected.
 
-The first naive production ZIP was about **21,935 bytes**.
+The second lesson was that offline computation is a very good form of
+compression. The browser does not need to know how a puzzle was found.
+It only needs enough information to let someone solve it.
 
-That looked alarming until I inspected what was actually being shipped.
-The archive still contained development structure that had no reason to
-exist in the final game.
+And the 13KB limit mostly rewarded removing whole ideas from runtime,
+not shaving individual characters. The solver, generator, research code,
+and verification machinery can be as elaborate as they need to be as
+long as the shipped game only carries their output.
 
-After separating development and production concerns, an early stripped
-build reached **8,722 bytes**.
+UNICUBE started as "what if I put a unicorn puzzle on a cube?"
 
-That version was comfortably under the limit, but subsequent work added
-the actual campaign, tutorial, navigation, hints, camera behavior, and
-final visual system.
+The version I ended up liking is slightly different:
 
-The release pipeline became:
-
-`readable source → production dependency graph → remove experiments/solver/dev routes → compact verified level data → bundle → minify → single index.html → ZIP`
-
-The current release candidate is **12,634 bytes** against the JS13K
-limit of **13,312 bytes**, leaving **678 bytes** of headroom.
-
-The submission ZIP contains a single root-level `index.html`.
-
-No runtime solver. No generator. No external assets. No network
-dependency.
-
-## 16. The most dangerous bug appeared after compression
-
-One of the last bugs never appeared in the readable development version.
-
-The clean bundled production build was already under the size limit, but
-smoke-testing the **actual minified artifact** found a startup crash.
-
-The production level descriptors were missing `activeFaces`. The packed
-7×7 level also needed its board size explicitly restored during
-encoding.
-
-Both problems came from the production data transformation rather than
-the game logic itself.
-
-That was a useful final reminder:
-
-> Passing source tests does not mean the submission artifact works.
-
-For a size-constrained game, the compressed artifact is effectively
-another target platform. It needs to be tested directly.
-
-## 17. What is actually inside 13KB?
-
-The shipped game includes, in some form:
-
--   a WebGL cube renderer;
--   generalized N×N cube topology;
--   four puzzle sizes;
--   verified puzzle data;
--   canonical shared physical state;
--   mouse/pointer interaction;
--   cube rotation;
--   camera targeting;
--   face navigation;
--   campaign progression;
--   a guided tutorial;
--   logical hints;
--   undo/reset;
--   rules UI;
--   transitions;
--   pastel region rendering;
--   and the unicorns.
-
-The offline repository is intentionally much larger.
-
-It contains the experiments, generators, solvers, analysis scripts,
-fixtures, and tests used to decide what those 13KB should contain.
-
-The size limit didn't eliminate the research.
-
-It moved the research **outside the runtime**.
-
-## 18. What I would do with more bytes
-
-The first feature I would add is not sound or particles.
-
-It would be a **verified constellation bank**.
-
-Instead of generating arbitrary puzzles in the browser, I would search
-many more puzzles offline, verify them, compress a collection of good
-variants, and let a tiny seed choose between them.
-
-That could make URLs such as `?s=4821` represent shareable
-constellations while preserving the same guarantee: every shipped puzzle
-has already been verified.
-
-After that, I would consider a small completion animation and more
-sophisticated hint deductions.
-
-But neither is worth compromising the reliability of the 13KB version.
-
-## 19. What I learned
-
-### Random generation is not puzzle generation
-
-Generating valid-looking input is easy. Generating something uniquely
-solvable and enjoyable is a different problem.
-
-### Topology can be gameplay
-
-The cube started as the visual premise. It became the mathematical
-mechanism.
-
-### Local ambiguity can be desirable
-
-Normally ambiguity sounds like a puzzle-generation failure. UNICUBE
-intentionally allows individual faces to remain ambiguous because
-neighboring faces provide the missing information.
-
-### Offline computation is a form of compression
-
-The browser does not need to know how difficult it was to find a puzzle.
-It only needs the result.
-
-### Size limits reward architecture
-
-The biggest savings did not initially come from shaving characters. They
-came from deciding what **should not exist at runtime at all**.
-
-### Test the thing you actually submit
-
-The production-only startup bug appeared after the game had already
-passed its source regression suite.
-
-The ZIP is the product.
-
-## 20. Final numbers
-
-At the current release-candidate stage:
-
-  Metric                                       Value
-  ----------------------------------- --------------
-  JS13K limit                           13,312 bytes
-  Current submission ZIP                12,634 bytes
-  Remaining headroom                       678 bytes
-  7×7 face references                            294
-  7×7 physical cube cells                        218
-  Random region maps tested                   10,000
-  Unique random face maps                      0.12%
-  5×5 independent face combinations               48
-  5×5 global cube solutions                        1
-
-And, eventually, one unicorn per row, column, and rainbow.
-
-## Epilogue
-
-UNICUBE began with a fairly silly question:
-
-> Can I put unicorns on a rainbow cube?
-
-The answer required considerably more constraint solving than expected.
-
-The part I'm happiest with is that the final game doesn't need to
-explain most of that machinery.
-
-You can rotate the cube, extinguish a star, notice something change
-around an edge, and place a unicorn.
-
-The mathematics happened so that moment could feel simple.
-
-**Six faces. Shared stars. One solution.**
+**What if each face is incomplete on purpose, and the cube itself is the
+missing information?**
