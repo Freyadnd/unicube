@@ -32,6 +32,8 @@ These are proposed constraints, not settled rules. In particular, cell sharing, 
 - `experiments/rainbow-cube/` — constructed face-local rainbow boards, global
   solution counting, and verified no-clue examples; see
   [Step 5 findings](experiments/results-rainbow-cube.md).
+- `src/` — the current development WebGL vertical slice for Board C; launch it
+  with `npm run dev`.
 
 ## Approach
 

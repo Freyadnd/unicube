@@ -33,6 +33,11 @@ and text region/answer nets. Region constraints remain face-local even when
 color labels agree across edges. No revealed clues, global regions, rendering,
 UI or gameplay are authorized.
 
+Step 8 authorizes a development-only vanilla WebGL vertical slice in `src/`,
+using Board C and the existing topology/player logic. It does not authorize
+changing puzzle rules, adding levels, 3D frameworks, final progression, sound,
+or 13KB optimization.
+
 Keep mathematical experiments in `experiments/`, rule definitions and open questions in `docs/`, and eventual game runtime code in `src/`. Keep `src/` empty apart from its directory placeholder during this phase.
 
 Before future implementation, read `README.md` and `docs/rules.md`. Document any chosen interpretation of unresolved rules, and keep experimental dependencies out of the game bundle.

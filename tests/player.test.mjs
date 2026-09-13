@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {topology as t} from '../experiments/cube-topology/topology.mjs';
 import {countGlobal} from '../experiments/rainbow-cube/model.mjs';
-import {createPlayer,UNKNOWN,EXCLUDED,UNICORN} from '../src/player.mjs';
+import {createPlayer,UNKNOWN,EXCLUDED,UNICORN,leftClickState} from '../src/player.mjs';
 const board=JSON.parse(readFileSync(new URL('../experiments/rainbow-cube/examples.json',import.meta.url))).C;
 function place(p,id){p.cycle(id);p.cycle(id);}
 
@@ -49,4 +49,20 @@ test('existing global solver respects required and excluded canonical cells with
  assert.equal(countGlobal(board.maps,{required:[board.truth[0]],excluded:[board.truth[0]]}).count,0);
  assert.throws(()=>countGlobal(board.maps,{required:['not a cell']}));
  const p=createPlayer(board.maps);p.cycle(board.truth[0]);assert.equal(countGlobal(board.maps,p.marks()).count,0);p.undo();assert.equal(countGlobal(board.maps,p.marks()).count,1);
+});
+
+test('explicit semantic marks replace and toggle states',()=>{
+ const p=createPlayer(board.maps);
+ const id=t.physicalCells.find(c=>c.faceCells.length===1).id;
+ p.set(id,UNICORN); assert.equal(p.get(id),UNICORN);
+ p.set(id,UNKNOWN); assert.equal(p.get(id),UNKNOWN);
+ p.set(id,EXCLUDED); assert.equal(p.get(id),EXCLUDED);
+ p.set(id,UNKNOWN); assert.equal(p.get(id),UNKNOWN);
+});
+
+test('3D left-click transition path cycles blank, excluded, unicorn, blank',()=>{
+ const p=createPlayer(board.maps),id=t.physicalCells.find(c=>c.faceCells.length===1).id;
+ p.set(id,leftClickState(p.get(id))); assert.equal(p.get(id),EXCLUDED);
+ p.set(id,leftClickState(p.get(id))); assert.equal(p.get(id),UNICORN);
+ p.set(id,leftClickState(p.get(id))); assert.equal(p.get(id),UNKNOWN);
 });

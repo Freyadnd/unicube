@@ -1,6 +1,8 @@
 import {topology} from '../experiments/cube-topology/topology.mjs';
 import {validateBoard} from '../experiments/rainbow-cube/model.mjs';
 export const UNKNOWN=0,EXCLUDED=1,UNICORN=2;
+export const leftClickState=state=>(state+1)%3;
+export const rightClickState=state=>state===EXCLUDED?UNKNOWN:EXCLUDED;
 export function createPlayer(maps,t=topology,fixed=[]) {
   validateBoard(maps,null,t);
   const fixedSet=new Set(fixed); const state=new Map(t.physicalCells.map(c=>[c.id,fixedSet.has(c.id)?UNICORN:UNKNOWN])),history=[];
@@ -18,7 +20,7 @@ export function createPlayer(maps,t=topology,fixed=[]) {
     }
     return {contradictions,solved:allComplete,placed:[...state.values()].filter(v=>v===UNICORN).length};
   }
-  return {get,cycle(id){commit([[id,(get(id)+1)%3]]);},
+  return {get,cycle(id){commit([[id,(get(id)+1)%3]]);},set(id,value){if(![UNKNOWN,EXCLUDED,UNICORN].includes(value))throw new Error('Invalid player state');commit([[id,value]]);},
     reset(){commit([...state.keys()].map(id=>[id,UNKNOWN]));},
     undo(){const patch=history.pop();if(patch)patch.forEach(([id,before])=>state.set(id,before));},
     get canUndo(){return history.length>0;},fixed:fixedSet,evaluate,
