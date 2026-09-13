@@ -3,6 +3,15 @@ import {runInNewContext} from 'node:vm';
 import {resolve} from 'node:path';
 const path=process.argv[2]||'dist/checkpoints/compact/index.html',html=await readFile(resolve(path),'utf8'),js=html.match(/<script>([\s\S]*?)<\/script>/)?.[1];
 if(!js)throw Error('Missing inlined production script');
+const packed=js.match(/=(\[\[3,\[[\s\S]*?\]\])\.map\(/)?.[1];
+if(!packed)throw Error('Cannot locate packed campaign in production script');
+const stages=runInNewContext(`(${packed})`),names=['FIRST STEPS','CONSTELLATION','DEEPER','UNICUBE'];
+for(let i=0;i<4;i++){
+  const [n,maps,truth,fixed,excluded,tutorial,startFace,title]=stages[i];
+  if(n!==[3,4,5,7][i]||maps.length!==6||maps.some(map=>map.length!==n*n)||!truth.length||!fixed.length||!Array.isArray(excluded)||!['front','back','left','right','top','bottom'].includes(startFace)||title!==names[i])throw Error(`Invalid packed act ${i+1}`);
+  if(i===0&&(!tutorial||tutorial.length<2))throw Error('Missing first-act tutorial');
+  console.log(`packed act ${i+1}: ${n}x${n}, 6 maps, ${fixed.length} fixed, ${excluded.length} excluded, ${startFace}, ${title}${tutorial?`, ${tutorial.length} tutorial steps`:''}`);
+}
 const elements=new Map(),classes=()=>({toggle(){},add(){},remove(){}});
 function element(){return {textContent:'',innerHTML:'',children:[],hidden:false,disabled:false,open:false,dataset:{},style:{setProperty(){}},classList:classes(),append(...x){this.children.push(...x)},replaceChildren(...x){this.children=x},setAttribute(){},addEventListener(){},removeEventListener(){},showModal(){this.open=true},close(){this.open=false}};}
 const get=id=>{if(!elements.has(id))elements.set(id,element());return elements.get(id);};

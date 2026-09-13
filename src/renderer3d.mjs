@@ -60,7 +60,7 @@ export function createRenderer(canvas,{topology=defaultTopology,maps,player,over
   function cellQuad(face,row,col,layer=0){return faceQuad(frames[face],row,col,topology.n,epsilon*layer);}
   function draw(vertices,rgba,mode=gl.TRIANGLES,matrix){if(!vertices.length)return;gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.DYNAMIC_DRAW);gl.vertexAttribPointer(pos,3,gl.FLOAT,false,0,0);gl.enableVertexAttribArray(pos);gl.uniformMatrix4fv(mvp,false,matrix);gl.uniform3fv(color,rgba);gl.drawArrays(mode,0,vertices.length/3);}
   const emoji=overlay?.getContext('2d');function resize(){const d=Math.min(devicePixelRatio||1,2),w=Math.max(1,canvas.clientWidth*d),h=Math.max(1,canvas.clientHeight*d);if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h;}if(overlay&&emoji&&(overlay.width!==w||overlay.height!==h)){overlay.width=w;overlay.height=h;}gl.viewport(0,0,w,h);}
-  function viewMatrix(){const view=identity();view[14]=-5;return view;}
+  function viewMatrix(){const view=identity();view[14]=-Math.max(5,1+4.6*canvas.clientHeight/canvas.clientWidth);return view;}
   function render(){if(disposed)return;
     const help=guidance(),time=performance.now();
     if(help?.key!==undefined&&help.key!==guideKey){guideKey=help.key;guideEntered=time;if(help.camera)cameraTween={from:{x:rx,y:ry},to:help.camera,start:time};}
