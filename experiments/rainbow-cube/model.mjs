@@ -41,10 +41,11 @@ export function grow(planted,seed) {
 
 // 126 exact-cover units at n=7, one option per canonical physical cell.
 // Region keys include face; equal colors across faces never merge constraints.
-export function countGlobal(maps,{limit=Infinity,maxNodes=2000000,t=topology,required=[],excluded=[]}={}) {
+export function countGlobal(maps,{limit=Infinity,maxNodes=2000000,t=topology,required=[],excluded=[],activeFaces=t.faces}={}) {
   validateBoard(maps,null,t);
   if(!(limit===Infinity||Number.isSafeInteger(limit)&&limit>=1)||!Number.isSafeInteger(maxNodes)||maxNodes<1)throw new Error('Invalid limit');
-  const covers=t.physicalCells.map(cell=>cell.faceCells.flatMap(r=>{
+  const active=new Set(activeFaces);if([...active].some(face=>!t.faces.includes(face)))throw new Error('Unknown active face');
+  const covers=t.physicalCells.map(cell=>cell.faceCells.filter(r=>active.has(r.face)).flatMap(r=>{
     const base=t.faces.indexOf(r.face)*3*t.n;
     return [base+r.row,base+t.n+r.col,base+2*t.n+maps[r.face][r.row*t.n+r.col]];
   }));
@@ -62,7 +63,7 @@ export function countGlobal(maps,{limit=Infinity,maxNodes=2000000,t=topology,req
   function visit() {
     if(nodes>=maxNodes){stopped='node-limit';return;}nodes++;
     let best=null;
-    for(let u=0;u<units.length;u++)if(!used[u]) {
+    for(let u=0;u<units.length;u++)if(!used[u]&&units[u].length) {
       const available=units[u].filter(i=>covers[i].every(j=>!used[j]));
       if(!available.length)return;
       if(best===null||available.length<best.length)best=available;

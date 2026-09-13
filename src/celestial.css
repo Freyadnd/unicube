@@ -1,0 +1,43 @@
+/* T1 reference presentation only. Later levels retain their current skin. */
+.celestial-title{display:none}
+body:not(.dev-mode) .dev-only{display:none!important}
+#cube{touch-action:none}
+body.celestial{background:#e6e5ec;color:#655a75}
+body.celestial header{top:5vh;left:0;right:0;text-align:center}
+body.celestial header h1{font-size:22px;font-weight:400;letter-spacing:.3em;color:#655a75}
+body.celestial .celestial-title{display:block;font-size:10px;letter-spacing:.24em;margin-top:12px;color:#91859c}
+body.celestial .game-subtitle{display:none}
+body.celestial #cube-wrap{background:#e6e5ec;box-shadow:none;border:0}
+body.celestial .toolbar{bottom:5vh;gap:18px;left:0;right:0;justify-content:center}
+body.celestial .toolbar button{border:0;background:transparent;color:#776982;font-size:13px;padding:8px 10px;letter-spacing:.06em}
+body.celestial .toolbar button:hover{background:#ffffff50}
+body.celestial #status{position:fixed;bottom:15vh;left:50%;transform:translateX(-50%);width:min(90vw,440px);font:15px/1.6 Georgia,serif;color:#6a5c79;letter-spacing:.015em}
+body.celestial #status.solved{font-size:24px;font-weight:400}
+body.celestial #level-indicator{display:none}
+body.celestial #rules-dialog{background:#f3eff4;color:#6a5c79;border:1px solid #cfc5d6;box-shadow:0 12px 40px #77698225;text-align:center}
+body.celestial #rules-dialog::backdrop{background:#ddd8e280}
+@media(max-height:500px){body.celestial header{top:8px}body.celestial .toolbar{bottom:8px}body.celestial #status{bottom:52px;font-size:12px}}
+
+/* Temporary full-cube proof; no progression or game controls. */
+body.cube-preview .toolbar > :not(#status){display:none!important}
+body.cube-preview #status{bottom:7vh;font:12px system-ui,sans-serif;letter-spacing:.12em}
+body.celestial #cube-wrap.solved{animation:celestial-complete .9s ease-in-out}
+@keyframes celestial-complete{50%{filter:brightness(1.045)}}
+body.celestial #rules-dialog button{float:none;display:block;margin:14px auto 0;padding:6px 18px;color:#6a5c79;font:14px system-ui,sans-serif;border:1px solid #cfc5d6;border-radius:4px}
+#campaign-progress,#face-nav{display:none}
+body.campaign-ui .celestial-title{display:none}
+body.campaign-ui #campaign-progress{display:flex;justify-content:center;gap:18px;margin-top:12px;font-size:11px;letter-spacing:.08em}
+#campaign-progress span{opacity:.38;padding:3px 7px;border-bottom:1px solid transparent}
+#campaign-progress span.current{opacity:1;border-color:#9786a5}
+#campaign-progress span.complete{opacity:.85}
+#campaign-progress span.complete::before{content:'✦ ';font-size:9px}
+body.campaign-ui #face-nav{display:flex;position:fixed;z-index:4;bottom:10vh;left:50%;transform:translateX(-50%);gap:5px;max-width:96vw}
+#face-nav button{border:1px solid transparent;background:transparent;color:#81718e;padding:4px 6px;font:10px system-ui,sans-serif;min-width:42px;border-radius:4px}
+#face-nav button span{display:block;font-size:11px;margin-top:2px}
+#face-nav button.front-facing{border-color:#b1a3bc}
+#face-nav button.complete{color:#5e786b;background:#ffffff35}
+#face-nav button.hinted{animation:face-hint 1s ease-in-out 2}
+@keyframes face-hint{50%{background:#fffaf0bb}}
+body.campaign-ui #status{bottom:17vh;font-size:13px}
+body.campaign-ui .toolbar{bottom:3vh;gap:10px}
+@media(max-height:500px){body.campaign-ui #face-nav{bottom:48px}body.campaign-ui #status{bottom:93px;font-size:11px}body.campaign-ui .toolbar{bottom:4px}}

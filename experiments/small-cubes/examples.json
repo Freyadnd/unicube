@@ -1,0 +1,606 @@
+[
+  {
+    "id": "CUBE3",
+    "n": 3,
+    "maps": {
+      "front": [
+        0,
+        0,
+        2,
+        0,
+        1,
+        2,
+        2,
+        2,
+        2
+      ],
+      "back": [
+        0,
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2,
+        1
+      ],
+      "left": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        2,
+        2,
+        0
+      ],
+      "right": [
+        1,
+        1,
+        0,
+        2,
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "top": [
+        2,
+        1,
+        0,
+        2,
+        1,
+        0,
+        2,
+        1,
+        0
+      ],
+      "bottom": [
+        0,
+        0,
+        0,
+        1,
+        2,
+        2,
+        1,
+        2,
+        2
+      ]
+    },
+    "truth": [
+      "0,0,1",
+      "0,1,0",
+      "0,2,2",
+      "1,0,0",
+      "1,1,2",
+      "1,2,1",
+      "2,0,2",
+      "2,1,1",
+      "2,2,0"
+    ],
+    "activeFaces": [
+      "front",
+      "back",
+      "left",
+      "right",
+      "top",
+      "bottom"
+    ],
+    "fixed": [
+      "0,0,1",
+      "0,1,0",
+      "1,0,0",
+      "1,2,1"
+    ],
+    "excluded": [
+      "0,0,0",
+      "0,0,2",
+      "0,1,1",
+      "0,1,2",
+      "0,2,1",
+      "1,0,1",
+      "1,1,0",
+      "1,2,0",
+      "1,2,2",
+      "2,0,0",
+      "2,1,0",
+      "2,2,1"
+    ],
+    "solutionSeed": 3,
+    "generationSeed": 230000,
+    "metrics": {
+      "global": 1,
+      "local": {
+        "front": 1,
+        "back": 1,
+        "left": 1,
+        "right": 2,
+        "top": 2,
+        "bottom": 1
+      },
+      "rounds": 2,
+      "forced": 5,
+      "solved": true,
+      "remainingUnicorns": 5
+    },
+    "tutorial": [
+      {
+        "target": "1,0,2",
+        "state": 1,
+        "unit": [
+          "1,0,2",
+          "1,1,2"
+        ],
+        "text": "one 🦄 in every rainbow · not here",
+        "proof": "front center is a singleton rainbow; its column excludes the bottom-middle star"
+      },
+      {
+        "target": "1,1,2",
+        "state": 2,
+        "unit": [
+          "1,1,2"
+        ],
+        "text": "only one star left · double-tap it",
+        "proof": "front singleton rainbow"
+      },
+      {
+        "target": "2,1,2",
+        "state": 1,
+        "unit": [
+          "1,1,2",
+          "2,1,2"
+        ],
+        "text": "one edge · two faces",
+        "edge": [
+          "front",
+          "right"
+        ],
+        "camera": {
+          "x": 0.25,
+          "y": -0.85
+        },
+        "proof": "front middle row already has its unicorn"
+      },
+      {
+        "target": "2,1,1",
+        "state": 2,
+        "unit": [
+          "2,1,2",
+          "2,1,1"
+        ],
+        "text": "a clue can cross the edge",
+        "camera": {
+          "x": 0.25,
+          "y": -0.85
+        },
+        "proof": "right middle row has one remaining possible cell after the shared exclusion"
+      },
+      {
+        "target": "2,0,2",
+        "state": 2,
+        "unit": [
+          "2,0,2",
+          "2,0,1"
+        ],
+        "text": "one 🦄 per column",
+        "proof": "right middle column is occupied; bottom row now has one remaining cell"
+      },
+      {
+        "target": "2,2,2",
+        "state": 1,
+        "unit": [
+          "2,2,2"
+        ],
+        "text": "one corner · three faces",
+        "corner": "2,2,2",
+        "camera": {
+          "x": 0.5,
+          "y": -0.55
+        },
+        "proof": "right left column already contains the bottom unicorn"
+      },
+      {
+        "target": "0,2,2",
+        "state": 2,
+        "unit": [
+          "0,2,2",
+          "2,2,2"
+        ],
+        "text": "clues travel around the cube",
+        "camera": {
+          "x": 0.7,
+          "y": -0.4
+        },
+        "proof": "top front row has one remaining cell after the shared corner exclusion"
+      }
+    ]
+  },
+  {
+    "id": "CUBE4",
+    "n": 4,
+    "maps": {
+      "front": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        3,
+        0,
+        2,
+        2,
+        3,
+        3,
+        2,
+        2
+      ],
+      "back": [
+        0,
+        0,
+        0,
+        2,
+        0,
+        1,
+        1,
+        2,
+        3,
+        3,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "left": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        2,
+        1,
+        3,
+        0,
+        2,
+        1,
+        3,
+        3
+      ],
+      "right": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        2,
+        2,
+        0,
+        1,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3
+      ],
+      "top": [
+        0,
+        0,
+        0,
+        0,
+        2,
+        2,
+        1,
+        0,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "bottom": [
+        0,
+        2,
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        3,
+        2,
+        2,
+        1,
+        3,
+        3,
+        3,
+        1
+      ]
+    },
+    "truth": [
+      "0,0,3",
+      "0,1,0",
+      "0,2,1",
+      "0,3,2",
+      "1,0,1",
+      "1,2,0",
+      "1,3,3",
+      "2,0,0",
+      "2,1,3",
+      "2,3,1",
+      "3,0,2",
+      "3,1,1",
+      "3,2,3",
+      "3,3,0"
+    ],
+    "activeFaces": [
+      "front",
+      "back",
+      "left",
+      "right",
+      "top",
+      "bottom"
+    ],
+    "fixed": [
+      "3,2,3",
+      "0,3,2",
+      "2,0,0",
+      "3,0,2",
+      "0,0,3",
+      "3,3,0"
+    ],
+    "excluded": [],
+    "solutionSeed": 1704,
+    "generationSeed": 250000,
+    "metrics": {
+      "global": 1,
+      "local": {
+        "front": 1,
+        "back": 1,
+        "left": 1,
+        "right": 1,
+        "top": 1,
+        "bottom": 1
+      },
+      "rounds": 2,
+      "forced": 8,
+      "solved": true,
+      "remainingUnicorns": 8
+    }
+  },
+  {
+    "id": "CUBE5",
+    "n": 5,
+    "maps": {
+      "front": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        2,
+        2,
+        3,
+        4,
+        4,
+        4,
+        4
+      ],
+      "back": [
+        0,
+        0,
+        2,
+        1,
+        1,
+        0,
+        3,
+        2,
+        1,
+        1,
+        3,
+        3,
+        2,
+        2,
+        2,
+        3,
+        3,
+        2,
+        4,
+        4,
+        3,
+        3,
+        4,
+        4,
+        4
+      ],
+      "left": [
+        1,
+        1,
+        0,
+        0,
+        3,
+        1,
+        1,
+        0,
+        0,
+        3,
+        1,
+        2,
+        2,
+        0,
+        3,
+        4,
+        4,
+        2,
+        0,
+        3,
+        4,
+        4,
+        2,
+        0,
+        3
+      ],
+      "right": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        2,
+        4,
+        4,
+        3,
+        3,
+        2,
+        4,
+        3,
+        3,
+        3,
+        4,
+        4,
+        3,
+        3,
+        3
+      ],
+      "top": [
+        2,
+        2,
+        2,
+        0,
+        0,
+        2,
+        2,
+        2,
+        0,
+        1,
+        3,
+        3,
+        2,
+        0,
+        0,
+        3,
+        4,
+        2,
+        4,
+        0,
+        3,
+        4,
+        4,
+        4,
+        4
+      ],
+      "bottom": [
+        3,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        1,
+        1,
+        1,
+        3,
+        2,
+        2,
+        2,
+        1,
+        3,
+        4,
+        4,
+        2,
+        1,
+        3,
+        4,
+        4,
+        4,
+        4
+      ]
+    },
+    "truth": [
+      "0,0,1",
+      "0,1,4",
+      "0,2,2",
+      "0,3,0",
+      "0,4,3",
+      "1,0,0",
+      "1,4,4",
+      "2,0,4",
+      "2,2,0",
+      "2,4,2",
+      "3,0,2",
+      "3,3,4",
+      "3,4,0",
+      "4,0,3",
+      "4,1,0",
+      "4,2,4",
+      "4,3,2",
+      "4,4,1"
+    ],
+    "activeFaces": [
+      "front",
+      "back",
+      "left",
+      "right",
+      "top",
+      "bottom"
+    ],
+    "fixed": [
+      "4,1,0",
+      "0,1,4",
+      "2,0,4",
+      "0,3,0",
+      "1,4,4"
+    ],
+    "excluded": [],
+    "solutionSeed": 1705,
+    "generationSeed": 270000,
+    "metrics": {
+      "global": 1,
+      "local": {
+        "front": 1,
+        "back": 2,
+        "left": 1,
+        "right": 1,
+        "top": 3,
+        "bottom": 8
+      },
+      "rounds": 3,
+      "forced": 13,
+      "solved": true,
+      "remainingUnicorns": 13
+    }
+  }
+]

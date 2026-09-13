@@ -4,6 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "test": "node --test experiments/*/*.test.mjs tests/*.test.mjs"
+    "test": "node --test experiments/*/*.test.mjs tests/*.test.mjs",
+    "build:submission": "node scripts/build-submission.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.5",
+    "terser": "^5.46.0"
   }
 }

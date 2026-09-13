@@ -1,25 +1,25 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>UNICUBE · Board C playtest</title><link rel="stylesheet" href="/src/style.css"><link rel="stylesheet" href="/src/fixed.css"><link rel="stylesheet" href="/src/three.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>UNICUBE</title><link rel="stylesheet" href="/src/style.css"><link rel="stylesheet" href="/src/fixed.css"><link rel="stylesheet" href="/src/three.css"><link rel="stylesheet" href="/src/celestial.css"></head>
 <body>
-<header><h1>UNICUBE <small>Board C · vertical slice</small></h1>
-<p>Find the unicorns on this unfolded cube.</p>
-<ul class="rules"><li>7 unicorns are visible on every face.</li><li>Exactly one in every row and column.</li><li>Exactly one in every rainbow region <strong>on each face</strong>.</li><li>Edge cells are shared by two faces; corners by three.</li></ul>
-<p>Click or tap: <strong>blank → × excluded → ★ unicorn → blank</strong>. Matching shared cells update together, even when their region colors differ.</p>
-<div id="legend" aria-label="Rainbow region colors"></div>
-<div class="toolbar"><label>DEV board <select id="variant"></select></label><button id="undo" disabled>Undo</button><button id="reset" disabled>Reset</button><span id="status" role="status">Loading Board C…</span></div>
+<header><h1>UNICUBE <small class="dev-only">Board C · vertical slice</small></h1><p class="celestial-title">FIRST STEPS</p><nav id="campaign-progress" aria-label="Campaign progress"></nav><p class="game-subtitle">one unicorn in every row, column &amp; rainbow<br><span>drag the cube · edges are shared</span></p>
+<ul class="rules dev-only"><li>7 unicorns are visible on every face.</li><li>Exactly one in every row and column.</li><li>Exactly one in every rainbow region <strong>on each face</strong>.</li><li>Edge cells are shared by two faces; corners by three.</li></ul>
+<p class="dev-only">Click or tap: <strong>blank → × excluded → ★ unicorn → blank</strong>.</p>
+<div id="legend" class="dev-only" aria-label="Rainbow region colors"></div>
+<div class="toolbar"><label class="dev-only">DEV board <select id="variant"></select></label><button id="undo" disabled>Undo</button><button id="reset" disabled>Reset</button><button id="hint-button">Hint</button><button id="rules-button">Rules</button><button id="next-level" hidden>Next</button><span id="level-indicator">1 / 5</span><span id="status" role="status">Loading…</span></div>
 </header>
-<main><p class="hint">Click: unicorn · Right-click: exclude · Drag: rotate</p>
+<main><p class="hint dev-only">Click: unicorn · Right-click: exclude · Drag: rotate</p>
 <div id="cell-info" aria-live="polite">Rows and columns are numbered from 1.</div>
-<div id="view-controls"><button id="view-3d" aria-pressed="true">3D cube</button><button id="view-2d" aria-pressed="false">2D debug net</button></div>
-<div id="cube-wrap"><canvas id="cube" aria-label="Interactive UNICUBE puzzle cube"></canvas></div>
+<div id="view-controls" class="dev-only"><button id="view-3d" aria-pressed="true">3D cube</button><button id="view-2d" aria-pressed="false">2D debug net</button></div>
+<nav id="face-nav" aria-label="Cube faces"></nav><div id="cube-wrap"><canvas id="cube" aria-label="Interactive UNICUBE puzzle cube"></canvas><canvas id="emoji-overlay" aria-hidden="true"></canvas></div>
 <div id="net-scroll" class="net-scroll" tabindex="0" aria-label="Scrollable cube net"><div id="net" aria-label="Board C cube net"></div></div>
-<ul id="contradictions" aria-label="Rule contradictions"></ul>
-<details id="developer"><summary>Developer tools — playtest only (contains spoilers)</summary>
+<ul id="contradictions" class="dev-only" aria-label="Rule contradictions"></ul>
+<details id="developer" class="dev-only"><summary>Developer tools — playtest only (contains spoilers)</summary>
 <p id="input-debug">input: waiting</p>
 <p>The count below uses the global solver. Zero means no completion matches these marks; normal play does not use this as a move warning.</p>
 <dl><dt>Selected fixture / variant</dt><dd id="selected">C0</dd><dt>Fixed unicorn clues</dt><dd id="fixed-count">0</dd><dt>Compatible global solutions</dt><dd id="compatible">Open this panel to calculate</dd><dt>Player-placed unicorns</dt><dd id="placed">0</dd><dt>Rule contradiction</dt><dd id="dev-conflict">No</dd></dl>
 <button id="show-solution" disabled>Show solution (DEV ONLY)</button><p>This fills the answer for testing. Undo restores your previous marks.</p>
 </details>
-</main><script type="module" src="/src/app.mjs"></script>
+<dialog id="rules-dialog"><h2>Rules</h2><p id="rules-copy">1 🦄 per row<br>1 🦄 per column<br>1 🦄 per rainbow</p><button id="rules-close" aria-label="Close rules">×</button></dialog>
+</main><script type="module" src="/src/entry.mjs"></script>
 </body></html>

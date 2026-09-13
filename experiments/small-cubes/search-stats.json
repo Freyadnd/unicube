@@ -1,0 +1,95 @@
+[
+  {
+    "n": 3,
+    "solutionSeed": 3,
+    "candidates": 1,
+    "connectedAndPlanted": 1,
+    "uniqueCandidates": 1,
+    "rejectedTeaching": 0,
+    "elapsedMs": 12,
+    "references": 54,
+    "physical": 26,
+    "incidences": [
+      6,
+      12,
+      8
+    ],
+    "fixed": 4,
+    "excluded": 12,
+    "global": 1,
+    "local": {
+      "front": 1,
+      "back": 1,
+      "left": 1,
+      "right": 2,
+      "top": 2,
+      "bottom": 1
+    },
+    "rounds": 2,
+    "forced": 5,
+    "solved": true,
+    "remainingUnicorns": 5
+  },
+  {
+    "n": 4,
+    "solutionSeed": 1704,
+    "candidates": 1,
+    "connectedAndPlanted": 1,
+    "uniqueCandidates": 1,
+    "rejectedTeaching": 0,
+    "elapsedMs": 98,
+    "references": 96,
+    "physical": 56,
+    "incidences": [
+      24,
+      24,
+      8
+    ],
+    "fixed": 6,
+    "excluded": 0,
+    "global": 1,
+    "local": {
+      "front": 1,
+      "back": 1,
+      "left": 1,
+      "right": 1,
+      "top": 1,
+      "bottom": 1
+    },
+    "rounds": 2,
+    "forced": 8,
+    "solved": true,
+    "remainingUnicorns": 8
+  },
+  {
+    "n": 5,
+    "solutionSeed": 1705,
+    "candidates": 1,
+    "connectedAndPlanted": 1,
+    "uniqueCandidates": 1,
+    "rejectedTeaching": 0,
+    "elapsedMs": 138,
+    "references": 150,
+    "physical": 98,
+    "incidences": [
+      54,
+      36,
+      8
+    ],
+    "fixed": 5,
+    "excluded": 0,
+    "global": 1,
+    "local": {
+      "front": 1,
+      "back": 2,
+      "left": 1,
+      "right": 1,
+      "top": 3,
+      "bottom": 8
+    },
+    "rounds": 3,
+    "forced": 13,
+    "solved": true,
+    "remainingUnicorns": 13
+  }
+]
