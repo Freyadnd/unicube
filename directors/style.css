@@ -1,0 +1,11 @@
+@import "../production/style.css";
+header #constellation-label{margin:10px 0 0;font:12px system-ui,sans-serif;letter-spacing:.2em;color:#81718e}
+footer{gap:4px;flex-wrap:wrap;align-items:center}
+footer button{padding:8px 9px}
+#new{border-left:1px solid #b5aabe;margin-left:7px;padding-left:14px}
+#info-card{background:#f3eff4;color:#6a5c79;border:1px solid #cfc5d6;box-shadow:0 12px 40px #77698225;text-align:center;max-width:340px;padding:22px}
+#info-card::backdrop{background:#ddd8e280}
+#info-card h2{font-size:17px;font-weight:500;letter-spacing:.1em}
+#info-card p{font-size:13px;line-height:1.6}
+#info-card button{padding:6px 18px;color:#6a5c79;background:transparent;border:1px solid #cfc5d6;border-radius:4px}
+@media(max-width:500px){footer{bottom:1vh;gap:0}footer button{font-size:11px;padding:7px 6px}#faces{bottom:11vh}#status{bottom:18vh}}

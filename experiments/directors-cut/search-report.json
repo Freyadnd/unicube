@@ -1,0 +1,39 @@
+{
+  "searchSeed": 20260913,
+  "attemptLimit": 300,
+  "refinementLimit": 26,
+  "target": 12,
+  "assemblies": 300,
+  "exactAssemblies": 300,
+  "assemblyCounts": {
+    "1": 1,
+    ">50": 250,
+    "13–50": 31,
+    "5–12": 12,
+    "2–4": 6
+  },
+  "refinementsAttempted": 13,
+  "refinementsUnique": 13,
+  "qualityRejected": {
+    "local product outside 1m–100b": 1
+  },
+  "duplicateRejected": 0,
+  "growthSource": "experiments/rainbow-cube/pools.json",
+  "sourceAnswers": [
+    "moderate",
+    "high"
+  ],
+  "initialSolverMs": 2026.655580000003,
+  "refinementMs": 2359.7761679999985,
+  "analysisMs": 84.24916499999972,
+  "accepted": 12,
+  "rejected": 288,
+  "acceptanceRate": 0.04,
+  "elapsedMs": 4487.751249999999,
+  "rejections": [
+    {
+      "attempt": 242,
+      "reason": "local product outside 1m–100b"
+    }
+  ]
+}

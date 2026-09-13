@@ -4,8 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/dev.mjs",
+    "dev:directors": "node scripts/dev-directors.mjs",
     "test": "node --test experiments/*/*.test.mjs tests/*.test.mjs",
-    "build:submission": "node scripts/build-submission.mjs"
+    "build:submission": "node scripts/build-submission.mjs",
+    "build:directors": "node scripts/build-directors.mjs",
+    "generate:directors": "node experiments/directors-cut/generate.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.5",

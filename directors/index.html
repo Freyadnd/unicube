@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UNICUBE — Director's Cut</title><link rel="stylesheet" href="./style.css"></head>
+<body><header><h1>UNICUBE</h1><p id="constellation-label">CONSTELLATION</p></header>
+<main><div id="object"><canvas id="cube" aria-label="Rotatable unicorn puzzle cube"></canvas><canvas id="overlay" aria-hidden="true"></canvas></div><p id="status" role="status"></p><nav id="faces" aria-label="Cube faces"></nav></main>
+<footer><button id="undo">Undo</button><button id="reset">Reset</button><button id="hint">Hint</button><button id="rules">Rules</button><button id="info">Info</button><button id="new">New Constellation</button></footer>
+<dialog id="rules-card"><h2>Rules</h2><p>✦ possible<br>· ruled out<br>🦄 unicorn<br><br>tap — rule out / restore<br>double-tap — place / remove 🦄<br>drag — rotate<br><br>1 🦄 per row<br>1 🦄 per column<br>1 🦄 per rainbow<br>edges and corners are shared</p><button id="close-rules">Close</button></dialog>
+<dialog id="info-card"><h2 id="info-title"></h2><p>7×7 · 6 faces<br>218 physical cells</p><p>Local face solutions<br><span id="local-counts"></span><br>= <span id="local-product"></span> independent combinations</p><p>Shared cube solutions<br><strong id="global-count"></strong></p><p>GLOBALLY UNIQUE ✓</p><button id="close-info">Close</button></dialog>
+<script type="module" src="./main.mjs"></script></body></html>
