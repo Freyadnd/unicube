@@ -3,6 +3,8 @@ import {createPlayer} from '../src/player.mjs';
 import {createRenderer} from '../src/renderer3d.mjs';
 import {celestialState} from '../src/celestial-input.mjs';
 import {faceProgress,findHint} from '../src/play-assist.mjs';
+import {createLessonGuide} from '../src/lesson-guide.mjs';
+import {directorLessons} from '../src/director-lesson-data.mjs';
 import {resolveConstellation,nextConstellation,validateBank} from './bank.mjs';
 
 const $=id=>document.getElementById(id),faces=topology.faces;
@@ -56,6 +58,7 @@ function load(item,writeHistory=true){
 function open(dialog){dialog.showModal();}
 function close(dialog){dialog.close();}
 $('rules').onclick=()=>open($('rules-card'));
+createLessonGuide({dialog:$('lesson-dialog'),entry:$('learn'),lessons:directorLessons});
 $('close-rules').onclick=()=>close($('rules-card'));
 $('info').onclick=()=>open($('info-card'));
 $('close-info').onclick=()=>close($('info-card'));

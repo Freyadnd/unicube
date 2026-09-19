@@ -121,6 +121,23 @@ For a face with only the one-per-row and one-per-column rules, placements corres
 - How will generation handle failures reproducibly, and what evidence of uniqueness should it retain?
 - Should generation run offline or in the browser, given the eventual size budget?
 
+## Director's Cut tutorial interpretation
+
+The first five Director's Cut lessons use isolated 4×4 face examples. A color is one
+connected face-local region in each example. "Only spot" is the existing
+one-unicorn-per-region rule after occupied rows remove candidates. "Locked pair"
+uses two regions whose remaining candidates lie in the same two rows; because
+each region and row needs one unicorn, those rows cannot hold a unicorn from a
+third region. These examples add no rule or player clue to the Director's Cut
+constellation boards.
+
+The later face examples teach direct row and column exclusions, direct
+face-local region exclusions, and their intersection. The Across the Cube
+example uses the fixed 7×7 topology: Front `(3,6)` and Right `(3,0)` are one
+physical edge cell, as are Front `(4,6)` and Right `(4,0)` in its exercise.
+Placing that cell is one occupancy decision visible on both faces, so the
+other cells in each incident row are excluded. Coordinates here are zero-based.
+
 ## Validation targets before gameplay
 
 Future experiments should first formalize one candidate model, then test:

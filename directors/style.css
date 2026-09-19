@@ -1,4 +1,5 @@
 @import "../production/style.css";
+@import "../src/lesson-guide.css";
 header #constellation-label{margin:10px 0 0;font:12px system-ui,sans-serif;letter-spacing:.2em;color:#81718e}
 footer{gap:4px;flex-wrap:wrap;align-items:center}
 footer button{padding:8px 9px}
